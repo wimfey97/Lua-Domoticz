@@ -6,30 +6,31 @@
 -- script easily adaptable and reusable.
 --
 -- Usage:
--- 1. 
+-- Within the customisation section below, do
+-- 1. Update the trigger variable with the Domoticz name of the switch that will trigger the actions.
+-- 2. set variable i to the total number of switches that will change state based on the triggered action.
+-- 3. For each of the switches that will change, add the name to the switch[x] variable and the command (on or off) to the command[x] variable.
+
 -- WimFey97
 -- V1.0 - 02122015 - Initial Version 
 
-
-trigger='Test1'	-- This defines the trigger switch. Use the (cases-sensitive) name of the switch in Domoticz that you want to use.
-i = 2			-- This defines the number of switches that will be impacted by the trigger switch.
 switch = {}		-- array definition. Do not modify
 command = {}	-- array definition. Do not modify
 rcommand = {}	-- array definition. Do not modify
+
+-- Start of Customisation Section
+---------------------------------------------------------------------------------------------------------------------------- 
+trigger='Test1'	-- This defines the trigger switch. Use the (cases-sensitive) name of the switch in Domoticz that you want to use.
+i = 2			-- This defines the number of switches that will be impacted by the trigger switch.
 
 -- Customise the next section. For each switch that will need to act upon the trigger, add the name and the required action
 -- ("On" or "Off") when the trigger switch is turned "On". The reverse action will be taken when the trigger is turned off.
 -- Note that the number of declarations must be identical to the variable 'i' which is defined above.
 
-switch[1] = 'Test2'  -- This defines to turn switch Test2 "On" when switch Test1 is turned "On".
-command[1] = 'On'
+switch[1] = 'Test2'  
+command[1] = 'On'   -- This defines to turn switch Test2 "On" when switch Test1 is turned "On".
 switch [2] = 'Test3'
-command[2] = 'Off'
-
--- Use loging = 0 to stop logging messages to the Domoticz Log
--- Use loging = 1 to log actions
-
-loging = 1
+command[2] = 'Off'  -- This defines to turn switch Test3 "Off" when switch Test1 is turned "On".
 
 -- End of customisation section
 
@@ -44,7 +45,6 @@ commandArray = {}
  -- do this when trigger is turned on.
 if (devicechanged[trigger]) == 'On' then 
 	for n = 1,i do
-	    print(switch[n])
 		if otherdevices[switch[n]] ~= command[n] then  -- only execute action on target switch if not yet in desired state.
 			commandArray[switch[n]] = command[n]
 		end
